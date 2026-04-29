@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Battle IG Mobile</title>
+<style>
+body {
+  margin:0;
+  background:#000;
+  font-family:Arial;
+  overflow:hidden;
+}
+
+/* FORM */
+#panel {
+  position:absolute;
+  top:10px;
+  left:10px;
+  z-index:10;
+}
+
+input {
+  display:block;
+  margin:4px 0;
+  width:180px;
+}
+
+button {
+  width:100%;
+  background:red;
+  color:white;
+  border:none;
+  padding:5px;
+}
+
+/* LATERAL */
+#sidebar {
+  position:absolute;
+  right:0;
+  top:0;
+  width:140px;
+  height:100%;
+  background:#111;
+  color:white;
+  font-size:12px;
+  padding:5px;
+  overflow:hidden;
+}
+
+canvas {
+  display:block;
+}
+</style>
+</head>
+<body>
+
+<div id="panel">
+  <input id="p1" placeholder="Jugador 1">
+  <input id="p2" placeholder="Jugador 2">
+  <input id="p3" placeholder="Jugador 3">
+  <input id="p4" placeholder="Jugador 4">
+  <input id="p5" placeholder="Jugador 5">
+  <button onclick="start()">INICIAR</button>
+</div>
+
+<div id="sidebar">
+  <b>TOP KILLS</b>
+  <div id="kills"></div>
+  <hr>
+  <b>EVENTOS</b>
+  <div id="feed"></div>
+</div>
+
+<canvas id="game"></canvas>
+
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+// formato vertical
+canvas.width = 400;
+canvas.height = 700;
+
+let players = [];
+let items = [];
+let feed = [];
+
+function getUsername(input) {
+  if(input.includes("instagram.com")) {
+    let parts = input.split("/");
+    return parts.filter(p => p && !p.includes("http") && !p.includes("instagram"))[0];
+  }
+  return input;
+}
+
+function randomColor() {
+  return `hsl(${Math.random()*360}, 70%, 50%)`;
+}
+
+class Player {
+  constructor(name) {
+    this.name = name;
+    this.x = Math.random()*canvas.width;
+    this.y = Math.random()*canvas.height;
+    this.vx = (Math.random()-0.5)*6;
+    this.vy = (Math.random()-0.5)*6;
+    this.hp = 100;
+    this.radius = 25;
+    this.color = randomColor();
+    this.kills = 0;
+  }
+
+  draw() {
+    // círculo
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
+    ctx.fill();
+
+    // nombre
+    ctx.fillStyle = "white";
+    ctx.font = "10px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(this.name, this.x, this.y + 3);
+
+    // vida
+    ctx.fillStyle = "red";
+    ctx.fillRect(this.x-20, this.y-30, this.hp/2, 4);
+  }
+
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+
+    if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
+    if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
+  }
+}
+
+class Item {
+  constructor(type) {
+    this.type = type;
+    this.x = Math.random()*canvas.width;
+    this.y = Math.random()*canvas.height;
+    this.radius = 12;
+  }
+
+  draw() {
+    ctx.fillStyle = this.type === "weapon" ? "white" : "green";
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
+    ctx.fill();
+  }
+}
+
+function addFeed(text) {
+  feed.unshift(text);
+  feed = feed.slice(0,10);
+
+  document.getElementById("feed").innerHTML = feed.join("<br>");
+}
+
+function updateKillsUI() {
+  let sorted = [...players].sort((a,b)=>b.kills-a.kills);
+  document.getElementById("kills").innerHTML =
+    sorted.map(p => `${p.name}: ${p.kills}`).join("<br>");
+}
+
+function collision(a,b) {
+  let dx = a.x - b.x;
+  let dy = a.y - b.y;
+  return Math.sqrt(dx*dx+dy*dy) < a.radius + b.radius;
+}
+
+function start() {
+  let inputs = [p1.value,p2.value,p3.value,p4.value,p5.value];
+
+  players = inputs.map(u => {
+    let name = getUsername(u.trim());
+    return new Player(name);
+  });
+
+  setInterval(spawnItem, 900);
+  requestAnimationFrame(loop);
+}
+
+function spawnItem() {
+  let type = Math.random() > 0.5 ? "weapon" : "apple";
+  items.push(new Item(type));
+}
+
+function loop() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  players.forEach(p => {
+    p.update();
+    p.draw();
+  });
+
+  items.forEach((item,i) => {
+    item.draw();
+
+    players.forEach(p => {
+      if(collision(p,item)) {
+
+        if(item.type === "weapon") {
+          let enemy = players[Math.floor(Math.random()*players.length)];
+          if(enemy !== p) {
+            enemy.hp -= 30;
+
+            if(enemy.hp <= 0) {
+              p.kills++;
+              addFeed(`${p.name} eliminó a ${enemy.name}`);
+            }
+          }
+        }
+
+        if(item.type === "apple") {
+          p.hp = Math.min(100, p.hp + 20);
+          addFeed(`${p.name} se curó`);
+        }
+
+        items.splice(i,1);
+      }
+    });
+  });
+
+  // eliminar muertos
+  players = players.filter(p => p.hp > 0);
+
+  updateKillsUI();
+
+  if(players.length === 1) {
+    ctx.fillStyle = "yellow";
+    ctx.font = "30px Arial";
+    ctx.fillText("GANADOR", 100, 300);
+    ctx.fillText(players[0].name, 100, 340);
+    return;
+  }
+
+  requestAnimationFrame(loop);
+}
+</script>
+
+</body>
+</html>
