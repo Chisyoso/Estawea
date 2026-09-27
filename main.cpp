@@ -47,7 +47,14 @@ bot.global_command_create(stats);
             if (event.get_parameter("usuario").index() != 0) {
     id = std::get<dpp::snowflake>(event.get_parameter("usuario"));
     stade = false;
-
+        if(xpn[id] == 0){
+			xpn[id] = 10;
+            }
+        if(xp[id] >= xpn[id]){
+            xpn[id] += 20;
+            xp[id] = 0;
+            level[id]++;
+        }
 }
 dpp::user* usere = dpp::find_user(id);
             dpp::embed embes;
