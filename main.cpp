@@ -111,5 +111,18 @@ int main() {
         }
     });
 
+	// botones ##
+    bot.on_button_click([](const dpp::button_click_t& event) {
+
+    if (event.custom_id == "pedir") {
+		dpp::mebed embes;
+        embes.set_title("CONTRINCANTE ENCONTRADO");
+        embes.set_description("AHORA TE TOCARA LUCHAR CONTRA: <@" + event.command.get_issuing_user().id + ">");
+        event.reply(dpp::message(event.command.channel_id, embes));
+        
+    }
+
+});
+
     bot.start(dpp::st_wait);
 }
