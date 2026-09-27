@@ -122,7 +122,7 @@ dpp::component().add_component(buton)
 
     if (event.custom_id == "pedir") {
 		dpp::embed embec;
-        dpp::message msg = event.command;
+        dpp::message msg = event.command.get_message();
         msg.components.clear();
         bot.message_edit(msg);
         embec.set_title("CONTRINCANTE ENCONTRADO");
