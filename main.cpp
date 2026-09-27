@@ -29,7 +29,7 @@ bot.global_command_create(stats);
 // COMANDOS ###
 
 
-    bot.on_slashcommand([](const dpp::slashcommand_t& event) {
+    bot.on_slashcommand([&bot](const dpp::slashcommand_t& event) {
 		dpp::snowflake id = event.command.get_issuing_user().id;
 		
         if(xpn[id] == 0 && level[id] == 0){
