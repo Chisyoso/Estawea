@@ -55,11 +55,7 @@ int main() {
             if (!stade) {
                 dpp::user usuario = event.command.get_resolved_user(id);
 
-                if (!usuario) {
-                    event.reply("No encontré ese usuario");
-                    return;
-                }
-
+                
                 usere = usuario;
 
                 if (xpn[id] == 0 && level[id] == 0)
