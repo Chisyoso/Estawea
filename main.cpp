@@ -38,6 +38,7 @@ bot.global_command_create(stats);
             xp[id] = 0;
             level[id]++;
         }
+        bool stade = true;
 
         if (event.command.get_command_name() == "hola")
             event.reply("adios 🥺");
@@ -49,7 +50,7 @@ bot.global_command_create(stats);
 }
             dpp::embed embes;
 std::string fmsg;
-bool stade = true;
+
 
 dpp::user* usere = dpp::find_user(id);
 if(!usere){
@@ -78,7 +79,6 @@ else{
             embes.add_field("nivel: ", std::to_string(level[id]));
             event.reply(dpp::message(event.command.channel_id, embes));}
             
-}
     });
 
     bot.start(dpp::st_wait);
