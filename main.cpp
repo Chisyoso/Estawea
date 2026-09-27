@@ -5,7 +5,7 @@
 #include <string>
 
 std::map<dpp::snowflake, int> xp, level, xpn, bt, btw;
-bool stade = true;
+
 int main() {
     const char* token = std::getenv("DISCORD_TOKEN");
 
@@ -49,6 +49,7 @@ bot.global_command_create(stats);
 }
             dpp::embed embes;
 std::string fmsg;
+bool stade = true;
 if(stade){
         	embes.set_title("TU CARTA: ");
              fmsg = "# TUS STATS \n";}
