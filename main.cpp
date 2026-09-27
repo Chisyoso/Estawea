@@ -24,13 +24,14 @@ int main() {
         if (event.command.get_command_name() == "hola")
             event.reply("adios 🥺");
     
-		else if (event.command.get_command_name() == "stats")
+		else if (event.command.get_command_name() == "stats"){
             dpp::embed embes;
         	embes.set_title("TU CARTA: ");
             embes.set_description("datos: ");
             embes.add_field("nombre: ", event.command.get_issuing_user().username);
             embes.set_thumbnail(event.command.get_issuing_user().get_avatar_url());
-            embes.reply(dpp::message(event.command.channel_id, embes));
+            event.reply(dpp::message(event.command.channel_id, embes));
+}
     });
 
     bot.start(dpp::st_wait);
