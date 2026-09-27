@@ -4,8 +4,7 @@
 #include <cctype>
 #include <string>
 
-std::map<dpp::snowflake, int> xp;
-
+std::map<dpp::snowflake, int> xp, level, xpn, bt, btw;
 int main() {
     const char* token = std::getenv("DISCORD_TOKEN");
 
@@ -31,11 +30,17 @@ int main() {
     
 		else if (event.command.get_command_name() == "stats"){
             dpp::embed embes;
+            dpp::snowflake id = event.command.get_issuing_user().id;
         	embes.set_title("TU CARTA: ");
-            embes.set_description("# datos: ");
+            std::string fmsg = "# TUS STATS";
+            fmsg += "Xp: ";
+            fmsg += std::to_string(xp[id]);
+			fmsg += " / ";
+            fmsg += std::to_string(xpr[id]);
             embes.add_field("nombre: ", event.command.get_issuing_user().username);
-            embes.add_field("Xp: ", std::to_string(xp[event.command.get_issuing_user().id]));
             embes.set_thumbnail(event.command.get_issuing_user().get_avatar_url());
+            embes.add_field("Level: ", std::to_string(level[id]));
+            embes
             event.reply(dpp::message(event.command.channel_id, embes));
 }
     });
