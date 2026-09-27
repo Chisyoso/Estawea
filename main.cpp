@@ -120,23 +120,24 @@ dpp::component().add_component(buton)
 	// botones ##
     bot.on_button_click([&bot](const dpp::button_click_t& event) {
     
+if (event.custom_id == "pedir") {
+    bot.message_get(event.command.channel_id, event.command.message_id,
+    [&bot, event](const dpp::confirmation_callback_t& callback) {
+        dpp::message msg = std::get<dpp::message>(callback.value);
 
-    if (event.custom_id == "pedir") {
-            bot.message_get(event.command.channel_id, event.command.message_id,
-            [&bot, event](const dpp::confirmation_callback_t& callback) {
-            dpp::message msg = std::get<dpp::message>(callback.value);
-
-		dpp::embed embec;
-        msg.components.clear();
-        bot.message_edit(msg);
+        dpp::embed embec;
         embec.set_title("CONTRINCANTE ENCONTRADO");
         embec.set_description("AHORA TE TOCARA LUCHAR CONTRA: <@" + std::to_string(event.command.get_issuing_user().id) + ">");
-        event.reply(dpp::message(event.command.channel_id, embec));
-        
-    }
-);
+
+        msg.embeds.clear();
+        msg.add_embed(embec);
+        msg.components.clear();
+
+        bot.message_edit(msg);
+    });
 }
 
+    
 });
 
     bot.start(dpp::st_wait);
