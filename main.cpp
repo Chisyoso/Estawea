@@ -29,11 +29,11 @@ bot.global_command_create(stats);
     bot.on_slashcommand([](const dpp::slashcommand_t& event) {
 		dpp::snowflake id = event.command.get_issuing_user().
 		
-        if(xpr[id] == 0){
-			xpr[id] = 10;
+        if(xpn[id] == 0){
+			xpn[id] = 10;
             }
-        if(xp[id] >= xpr[id]){
-            xpr[id] += 20;
+        if(xp[id] >= xpn[id]){
+            xpn[id] += 20;
             xp[id] = 0;
             level[id]++;
         }
@@ -51,7 +51,7 @@ bot.global_command_create(stats);
             fmsg += "Xp: ";
             fmsg += std::to_string(xp[id]);
 			fmsg += " / ";
-            fmsg += std::to_string(xpr[id]);
+            fmsg += std::to_string(xpn[id]);
             embes.set_description(fmsg);
             embes.add_field("nombre: ", event.command.get_issuing_user().username);
             embes.set_thumbnail(event.command.get_issuing_user().get_avatar_url());
