@@ -121,7 +121,7 @@ dpp::component().add_component(boton)
     bot.on_button_click([](const dpp::button_click_t& event) {
 
     if (event.custom_id == "pedir") {
-		dpp::mebed embec;
+		dpp::embed embec;
         embec.set_title("CONTRINCANTE ENCONTRADO");
         embec.set_description("AHORA TE TOCARA LUCHAR CONTRA: <@" + std::to_string(event.command.get_issuing_user().id) + ">");
         event.reply(dpp::message(event.command.channel_id, embec));
