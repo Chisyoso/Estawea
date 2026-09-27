@@ -125,29 +125,18 @@ if (event.custom_id == "pedir") {
 
     bot.message_get(event.command.message_id, event.command.channel_id,
     [&bot, event](const dpp::confirmation_callback_t& callback) {
-        if (callback.is_error()) {
-            std::cout << callback.get_error().message << std::endl;
-            return;
-        }
-
         dpp::message msg = std::get<dpp::message>(callback.value);
 
-        dpp::embed embec;
-        embec.set_title("CONTRINCANTE ENCONTRADO :D");
-        embec.set_description("AHORA TE TOCARA LUCHAR CONTRA: <@" + std::to_string(event.command.get_issuing_user().id) + ">");
-
+        dpp::embed embed;
+        embed.set_title("CONTRINCANTE ENCONTRADO :D");
+        embed.set_description("AHORA TE TOCARA LUCHAR CONTRA: <@" + std::to_string(event.command.get_issuing_user().id) + ">");
         msg.embeds.clear();
-        msg.add_embed(embec);
+        msg.add_embed(embed);
         msg.components.clear();
-
-        bot.message_edit(msg, [](const dpp::confirmation_callback_t& callback) {
-            if (callback.is_error())
-                std::cout << callback.get_error().message << std::endl;
-        });
+        bot.message_edit(msg);
     });
 }
 
-    
 });
 
     bot.start(dpp::st_wait);
