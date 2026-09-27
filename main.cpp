@@ -27,7 +27,7 @@ int main() {
     bot.on_slashcommand([](const dpp::slashcommand_t& event) {
 		dpp::snowflake id = event.command.get_issuing_user();
 		if(xpn[id] == 0){
-			xpr[id] = 10;
+			xpn[id] = 10;
             }
         if(xp[id] >= xpr[id]){
             xpn[id] += 20;
