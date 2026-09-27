@@ -53,14 +53,14 @@ int main() {
             }
 
             if (!stade) {
-                auto usuario = event.command.get_resolved_user(id);
+                dpp::user usuario = event.command.get_resolved_user(id);
 
                 if (!usuario) {
                     event.reply("No encontré ese usuario");
                     return;
                 }
 
-                usere = *usuario;
+                usere = usuario;
 
                 if (xpn[id] == 0 && level[id] == 0)
                     xpn[id] = 10;
