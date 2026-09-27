@@ -121,6 +121,7 @@ dpp::component().add_component(buton)
     bot.on_button_click([&bot](const dpp::button_click_t& event) {
     
 if (event.custom_id == "pedir") {
+    event.reply(dpp::ir_deferred_update_message);
     bot.message_get(event.command.channel_id, event.command.message_id,
     [&bot, event](const dpp::confirmation_callback_t& callback) {
         dpp::message msg = std::get<dpp::message>(callback.value);
