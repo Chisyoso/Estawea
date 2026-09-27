@@ -56,7 +56,14 @@ bot.global_command_create(stats);
             level[id]++;
         }
 }
-dpp::user* usere = dpp::find_user(id);
+dpp::user* usere;
+
+bot.user_get(id, [](const dpp::confirmation_callback_t& callback) {
+    if (callback.is_error()) return;
+
+    usere = std::get<dpp::user>(callback.value);
+});
+
             dpp::embed embes;
 std::string fmsg;
 
