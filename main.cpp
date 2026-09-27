@@ -25,22 +25,31 @@ int main() {
     });
 
     bot.on_slashcommand([](const dpp::slashcommand_t& event) {
+		dpp::snowflake id = event.command.get_issuing_user().
+		if(xpr[id] == 0){
+			xpr[id] = 10;
+            }
+        if(xp[id] >= xpr[id]){
+            xpr[id] += 20;
+            xp[id] = 0;
+            level[id]++;
+        }
+
         if (event.command.get_command_name() == "hola")
             event.reply("adios 🥺");
     
 		else if (event.command.get_command_name() == "stats"){
             dpp::embed embes;
-            dpp::snowflake id = event.command.get_issuing_user().id;
         	embes.set_title("TU CARTA: ");
             std::string fmsg = "# TUS STATS \n";
             fmsg += "Xp: ";
             fmsg += std::to_string(xp[id]);
 			fmsg += " / ";
-            fmsg += std::to_string(xpn[id]);
+            fmsg += std::to_string(xpr[id]);
             embes.set_description(fmsg);
             embes.add_field("nombre: ", event.command.get_issuing_user().username);
             embes.set_thumbnail(event.command.get_issuing_user().get_avatar_url());
-            embes.add_field("Level: ", std::to_string(level[id]));
+            embes.add_field("nivel: ", std::to_string(level[id]));
             event.reply(dpp::message(event.command.channel_id, embes));
 }
     });
