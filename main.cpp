@@ -126,7 +126,7 @@ if (event.custom_id == "pedir") {
         dpp::message msg = std::get<dpp::message>(callback.value);
 
         dpp::embed embec;
-        embec.set_title("CONTRINCANTE ENCONTRADO");
+        embec.set_title("CONTRINCANTE ENCONTRADO :D");
         embec.set_description("AHORA TE TOCARA LUCHAR CONTRA: <@" + std::to_string(event.command.get_issuing_user().id) + ">");
 
         msg.embeds.clear();
