@@ -25,12 +25,12 @@ int main() {
             event.reply("adios 🥺");
     
 		else if (event.command.get_command_name() == "stats")
-            dpp::embed embed;
-        	embed.set_title("TU CARTA: ");
-            embed.set_description("datos: ");
-            embed.add_field("nombre: ", event.command.get_issuing_user().username);
-            embed.set_thumbnail(event.command.get_issuing_user().get_avatar_url());
-            event.reply(dpp::message(event.command.channel_id, embed));
+            dpp::embed embes;
+        	embes.set_title("TU CARTA: ");
+            embes.set_description("datos: ");
+            embes.add_field("nombre: ", event.command.get_issuing_user().username);
+            embes.set_thumbnail(event.command.get_issuing_user().get_avatar_url());
+            embes.reply(dpp::message(event.command.channel_id, embes));
     });
 
     bot.start(dpp::st_wait);
