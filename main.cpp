@@ -47,12 +47,12 @@ bot.global_command_create(stats);
             if (event.get_parameter("usuario").index() != 0) {
     id = std::get<dpp::snowflake>(event.get_parameter("usuario"));
     stade = false;
+
 }
+dpp::user* usere = dpp::find_user(id);
             dpp::embed embes;
 std::string fmsg;
 
-
-dpp::user* usere = dpp::find_user(id);
 if(!usere){
 event.reply("No encontre ese usuario");
 return;
