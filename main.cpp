@@ -64,8 +64,8 @@ else{
 			fmsg += " / ";
             fmsg += std::to_string(xpn[id]);
             embes.set_description(fmsg);
-            embes.add_field("nombre: ", event.command.get_issuing_user().username);
-            embes.set_thumbnail(event.command.get_issuing_user().get_avatar_url());
+            embes.add_field("nombre: ", id.username);
+            embes.set_thumbnail(id.get_avatar_url());
             embes.add_field("nivel: ", std::to_string(level[id]));
             event.reply(dpp::message(event.command.channel_id, embes));
 }
