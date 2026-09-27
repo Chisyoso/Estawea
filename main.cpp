@@ -64,7 +64,7 @@ if(stade){
 else{
             embes.set_title("TU CARTA: ");
             fmsg = "# STATS DE id <@";
-            fmsg += id;
+            fmsg += std::to_string(id);
             fmsg += "> \n";
 }
             
