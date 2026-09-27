@@ -24,7 +24,7 @@ bot.global_command_create(
         if (event.command.get_command_name() == "ping")
             event.reply("Pong! 🏓");
     
-		else if (event.command.get_command_name() == "ping")
+		else if (event.command.get_command_name() == "hola")
             event.reply("adios ");
     });
 
