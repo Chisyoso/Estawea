@@ -26,10 +26,11 @@ int main() {
     
 		else if (event.command.get_command_name() == "stats")
             dpp::embed embed;
-        	embed.set_title("TU CARTA");
+        	embed.set_title("TU CARTA: ");
             embed.set_description("datos: ");
-            embed.set_thumbnail(event.command.get_issuing_user().get_avatar_url);
-
+            embed.add_field("nombre: ", event.command.get_issuing_user().username);
+            embed.set_thumbnail(event.command.get_issuing_user().get_avatar_url());
+            event.reply(dpp::message(event.command.channel_id, embed));
     });
 
     bot.start(dpp::st_wait);
