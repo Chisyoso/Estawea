@@ -30,7 +30,7 @@ bot.global_command_create(stats);
     bot.on_slashcommand([](const dpp::slashcommand_t& event) {
 		dpp::snowflake id = event.command.get_issuing_user().id;
 		
-        if(xpn[id] == 0 && level[id] = 0){
+        if(xpn[id] == 0 && level[id] == 0){
 			xpn[id] = 10;
             }
         if(xp[id] >= xpn[id]){
@@ -47,7 +47,7 @@ bot.global_command_create(stats);
             if (event.get_parameter("usuario").index() != 0) {
     id = std::get<dpp::snowflake>(event.get_parameter("usuario"));
     stade = false;
-        if(xpn[id] == 0 && level[id] = 0){
+        if(xpn[id] == 0 && level[id] == 0){
 			xpn[id] = 10;
             }
         if(xp[id] >= xpn[id]){
