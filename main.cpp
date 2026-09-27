@@ -11,21 +11,25 @@ int main() {
     bot.on_ready([&bot](const dpp::ready_t& event) {
         if (dpp::run_once<struct register_commands>()) {
             bot.global_command_create(
-                dpp::slashcommand("ping", "Responde con Pong!", bot.me.id)
+                dpp::slashcommand("stats", "observa tus stats", bot.me.id)
             );
 
-bot.global_command_create(
+	bot.global_command_create(
                 dpp::slashcommand("hola", "Responde con un saludo!", bot.me.id)
             );
         }
     });
 
     bot.on_slashcommand([](const dpp::slashcommand_t& event) {
-        if (event.command.get_command_name() == "ping")
-            event.reply("Pong! 🏓");
+        if (event.command.get_command_name() == "hola")
+            event.reply("adios 🥺");
     
-		else if (event.command.get_command_name() == "hola")
-            event.reply("adios ");
+		else if (event.command.get_command_name() == "stats")
+            dpp::embed embed;
+        	embed.set_title("TU CARTA");
+            embed.set_description("datos: ");
+            embed.set_thumbnail(event.command.get_issuing_user().get_avatar_url);
+
     });
 
     bot.start(dpp::st_wait);
