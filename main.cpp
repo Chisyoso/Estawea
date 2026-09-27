@@ -60,7 +60,7 @@ int main() {
             dpp::message msg(event.command.channel_id, embes);
             
             msg.add_component(
-dpp::component().add_component(boton)
+dpp::component().add_component(buton)
 );
             event.reply(msg);
         }
