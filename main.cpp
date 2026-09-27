@@ -32,15 +32,15 @@ int main() {
             dpp::embed embes;
             dpp::snowflake id = event.command.get_issuing_user().id;
         	embes.set_title("TU CARTA: ");
-            std::string fmsg = "# TUS STATS";
+            std::string fmsg = "# TUS STATS \n";
             fmsg += "Xp: ";
             fmsg += std::to_string(xp[id]);
 			fmsg += " / ";
             fmsg += std::to_string(xpr[id]);
+            embes.set_description(fmsg);
             embes.add_field("nombre: ", event.command.get_issuing_user().username);
             embes.set_thumbnail(event.command.get_issuing_user().get_avatar_url());
             embes.add_field("Level: ", std::to_string(level[id]));
-            embes
             event.reply(dpp::message(event.command.channel_id, embes));
 }
     });
