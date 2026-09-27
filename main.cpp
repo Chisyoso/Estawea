@@ -13,12 +13,19 @@ int main() {
             bot.global_command_create(
                 dpp::slashcommand("ping", "Responde con Pong!", bot.me.id)
             );
+
+bot.global_command_create(
+                dpp::slashcommand("hola", "Responde con un saludo!", bot.me.id)
+            );
         }
     });
 
     bot.on_slashcommand([](const dpp::slashcommand_t& event) {
         if (event.command.get_command_name() == "ping")
             event.reply("Pong! 🏓");
+    
+		else if (event.command.get_command_name() == "ping")
+            event.reply("adios ");
     });
 
     bot.start(dpp::st_wait);
