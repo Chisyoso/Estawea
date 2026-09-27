@@ -1,5 +1,7 @@
 #include <dpp/dpp.h>
 #include <cstdlib>
+#include <map>
+std::map<dpp::snowflake, int> xp;
 
 int main() {
     const char* token = std::getenv("DISCORD_TOKEN");
@@ -29,6 +31,7 @@ int main() {
         	embes.set_title("TU CARTA: ");
             embes.set_description("datos: ");
             embes.add_field("nombre: ", event.command.get_issuing_user().username);
+            embes.add_field("Xp: ", xp[event.command.get_issuing_user().id]);
             embes.set_thumbnail(event.command.get_issuing_user().get_avatar_url());
             event.reply(dpp::message(event.command.channel_id, embes));
 }
