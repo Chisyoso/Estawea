@@ -15,15 +15,21 @@ int main() {
 
     bot.on_ready([&bot](const dpp::ready_t& event) {
         if (dpp::run_once<struct register_commands>()) {
+            //
             dpp::slashcommand stats("stats", "Observa tus stats", bot.me.id);
             stats.add_option(
                 dpp::command_option(dpp::co_user, "usuario", "Usuario que quieres consultar", false)
             );
             bot.global_command_create(stats);
-
+            //
+			bot.global_command_create(
+				dpp::slashcommand("pvp", "busca pvp y alguien te respondera", bot.me.id)
+            );
+			//
             bot.global_command_create(
                 dpp::slashcommand("hola", "Responde con un saludo!", bot.me.id)
             );
+            
         }
     });
 
@@ -40,16 +46,26 @@ int main() {
             xpn[id] += 50;
             level[id]++;
         }
-// comando 1 ###
+// comando 1 ### hola
         if (event.command.get_command_name() == "hola") {
             event.reply("adios 🥺");
         }
-// comando 2###
+// comando 2### pvp
+		if(event.command.get_command_name() == "pvp"){
+			dpp::embed embes;
+            embes.set_title("BUSCANDO CONTRINCANTE");
+            embes.set_description("EL USUARIO <@" + std::to_string(id) + "> \n esta buscando pvp");
+            event.reply(dpp::message(event.command.channel_id, embes));
+            
+        }
+
+// comando 3## stats
 
         else if (event.command.get_command_name() == "stats") {
             if (event.get_parameter("usuario").index() != 0) {
                 id = std::get<dpp::snowflake>(event.get_parameter("usuario"));
                 stade = false;
+
             }
 
             if (!stade) {
