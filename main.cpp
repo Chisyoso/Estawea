@@ -5,6 +5,7 @@
 #include <string>
 
 std::map<dpp::snowflake, int> xp, level, xpn, bt, btw;
+bool stade = true;
 int main() {
     const char* token = std::getenv("DISCORD_TOKEN");
 
@@ -44,10 +45,20 @@ bot.global_command_create(stats);
 		else if (event.command.get_command_name() == "stats"){
             if (event.get_parameter("usuario").index() != 0) {
     id = std::get<dpp::snowflake>(event.get_parameter("usuario"));
+    stade = false;
 }
             dpp::embed embes;
+std::string fmsg;
+if(stade){
         	embes.set_title("TU CARTA: ");
-            std::string fmsg = "# TUS STATS \n";
+             fmsg = "# TUS STATS \n";}
+else{
+            embes.set_title("TU CARTA: ");
+            fmsg = "# STATS DE id <@";
+            fmsg += id;
+            fmsg += "> \n";
+}
+
             fmsg += "Xp: ";
             fmsg += std::to_string(xp[id]);
 			fmsg += " / ";
