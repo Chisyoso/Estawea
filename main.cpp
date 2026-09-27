@@ -122,8 +122,14 @@ dpp::component().add_component(buton)
     
 if (event.custom_id == "pedir") {
     event.reply(dpp::ir_deferred_update_message, dpp::message());
-    bot.message_get(event.command.channel_id, event.command.message_id,
+
+    bot.message_get(event.command.message_id, event.command.channel_id,
     [&bot, event](const dpp::confirmation_callback_t& callback) {
+        if (callback.is_error()) {
+            std::cout << callback.get_error().message << std::endl;
+            return;
+        }
+
         dpp::message msg = std::get<dpp::message>(callback.value);
 
         dpp::embed embec;
@@ -134,7 +140,10 @@ if (event.custom_id == "pedir") {
         msg.add_embed(embec);
         msg.components.clear();
 
-        bot.message_edit(msg);
+        bot.message_edit(msg, [](const dpp::confirmation_callback_t& callback) {
+            if (callback.is_error())
+                std::cout << callback.get_error().message << std::endl;
+        });
     });
 }
 
