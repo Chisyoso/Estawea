@@ -29,7 +29,7 @@ int main() {
 		if(xpn[id] == 0){
 			xpn[id] = 10;
             }
-        if(xp[id] >= xpr[id]){
+        if(xp[id] >= xpn[id]){
             xpn[id] += 20;
             xp[id] = 0;
             level[id]++;
