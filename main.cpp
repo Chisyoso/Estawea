@@ -1,7 +1,7 @@
 #include <dpp/dpp.h>
 #include <cstdlib>
 #include <map>
-std::map<dpp::snowflake, int> xp;
+std::map<dpp::snowflake, int> xp = 0;
 
 int main() {
     const char* token = std::getenv("DISCORD_TOKEN");
