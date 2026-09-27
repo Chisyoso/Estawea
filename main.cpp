@@ -34,8 +34,8 @@ bot.global_command_create(stats);
 			xpn[id] = 10;
             }
         if(xp[id] >= xpn[id]){
+            xp[id] -= xpn[id];
             xpn[id] += 20;
-            xp[id] = 0;
             level[id]++;
         }
         bool stade = true;
@@ -51,8 +51,8 @@ bot.global_command_create(stats);
 			xpn[id] = 10;
             }
         if(xp[id] >= xpn[id]){
+            xp[id] -= xpn[id];
             xpn[id] += 20;
-            xp[id] = 0;
             level[id]++;
         }
 }
