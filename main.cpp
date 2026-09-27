@@ -117,7 +117,7 @@ int main() {
     if (event.custom_id == "pedir") {
 		dpp::mebed embes;
         embes.set_title("CONTRINCANTE ENCONTRADO");
-        embes.set_description("AHORA TE TOCARA LUCHAR CONTRA: <@" + event.command.get_issuing_user().id + ">");
+        embes.set_description("AHORA TE TOCARA LUCHAR CONTRA: <@" + std::to_string(event.command.get_issuing_user().id) + ">");
         event.reply(dpp::message(event.command.channel_id, embes));
         
     }
