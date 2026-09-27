@@ -32,7 +32,7 @@ int main() {
 		else if (event.command.get_command_name() == "stats"){
             dpp::embed embes;
         	embes.set_title("TU CARTA: ");
-            embes.set_description("datos: ");
+            embes.set_description("# datos: ");
             embes.add_field("nombre: ", event.command.get_issuing_user().username);
             embes.add_field("Xp: ", std::to_string(xp[event.command.get_issuing_user().id]));
             embes.set_thumbnail(event.command.get_issuing_user().get_avatar_url());
