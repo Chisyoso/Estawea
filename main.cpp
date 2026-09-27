@@ -25,7 +25,7 @@ int main() {
     });
 
     bot.on_slashcommand([](const dpp::slashcommand_t& event) {
-		dpp::snowflake id = event.command.get_issuing_user();
+		dpp::snowflake id = event.command.get_issuing_user().id;
 		if(xpn[id] == 0){
 			xpn[id] = 10;
             }
