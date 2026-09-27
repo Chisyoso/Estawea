@@ -119,10 +119,14 @@ dpp::component().add_component(buton)
 
 	// botones ##
     bot.on_button_click([&bot](const dpp::button_click_t& event) {
+    
 
     if (event.custom_id == "pedir") {
+            bot.message_get(event.command.channel_id, event.command.message_id,
+            [&bot, event](const dpp::confirmation_callback_t& callback) {
+            dpp::message msg = std::get<dpp::message>(callback.value);
+
 		dpp::embed embec;
-        dpp::message msg = event.command.message;
         msg.components.clear();
         bot.message_edit(msg);
         embec.set_title("CONTRINCANTE ENCONTRADO");
@@ -130,6 +134,8 @@ dpp::component().add_component(buton)
         event.reply(dpp::message(event.command.channel_id, embec));
         
     }
+);
+}
 
 });
 
