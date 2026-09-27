@@ -50,6 +50,13 @@ bot.global_command_create(stats);
             dpp::embed embes;
 std::string fmsg;
 bool stade = true;
+
+dpp::user* usere = dpp::find_user(id);
+if(!usere){
+event.reply("No encontre ese usuario");
+return;
+}
+
 if(stade){
         	embes.set_title("TU CARTA: ");
              fmsg = "# TUS STATS \n";}
@@ -59,8 +66,8 @@ else{
             fmsg += id;
             fmsg += "> \n";
 }
-            dpp::user* usere = dpp::find_user(id);
-
+            
+            
             fmsg += "Xp: ";
             fmsg += std::to_string(xp[id]);
 			fmsg += " / ";
@@ -69,7 +76,8 @@ else{
             embes.add_field("nombre: ", usere->username);
             embes.set_thumbnail(usere->get_avatar_url());
             embes.add_field("nivel: ", std::to_string(level[id]));
-            event.reply(dpp::message(event.command.channel_id, embes));
+            event.reply(dpp::message(event.command.channel_id, embes));}
+            
 }
     });
 
