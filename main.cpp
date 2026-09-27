@@ -57,7 +57,7 @@ int main() {
 			dpp::embed embes;
             embes.set_title("BUSCANDO CONTRINCANTE");
             embes.set_description("EL USUARIO <@" + std::to_string(id) + "> \n esta buscando pvp");
-            dpp::message msg(event.command.channel_id, embed);
+            dpp::message msg(event.command.channel_id, embes);
             
             msg.add_component(
 dpp::component().add_component(boton)
@@ -124,7 +124,7 @@ dpp::component().add_component(boton)
 		dpp::mebed embec;
         embec.set_title("CONTRINCANTE ENCONTRADO");
         embec.set_description("AHORA TE TOCARA LUCHAR CONTRA: <@" + std::to_string(event.command.get_issuing_user().id) + ">");
-        event.reply(dpp::message(event.command.channel_id, embes));
+        event.reply(dpp::message(event.command.channel_id, embec));
         
     }
 
