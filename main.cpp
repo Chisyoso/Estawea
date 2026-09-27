@@ -52,11 +52,17 @@ int main() {
         }
 // comando 2### pvp
 		if(event.command.get_command_name() == "pvp"){
+            dpp::component buton = dpp::component().set_type(dpp::cot_button).set_label("ACEPTAR").set_id("pedir").set_style(dpp::cos_primary);
+
 			dpp::embed embes;
             embes.set_title("BUSCANDO CONTRINCANTE");
             embes.set_description("EL USUARIO <@" + std::to_string(id) + "> \n esta buscando pvp");
-            event.reply(dpp::message(event.command.channel_id, embes));
+            dpp::message msg(event.command.channel_id, embed);
             
+            msg.add_component(
+dpp::component().add_component(boton)
+);
+            event.reply(msg);
         }
 
 // comando 3## stats
@@ -115,9 +121,9 @@ int main() {
     bot.on_button_click([](const dpp::button_click_t& event) {
 
     if (event.custom_id == "pedir") {
-		dpp::mebed embes;
-        embes.set_title("CONTRINCANTE ENCONTRADO");
-        embes.set_description("AHORA TE TOCARA LUCHAR CONTRA: <@" + std::to_string(event.command.get_issuing_user().id) + ">");
+		dpp::mebed embec;
+        embec.set_title("CONTRINCANTE ENCONTRADO");
+        embec.set_description("AHORA TE TOCARA LUCHAR CONTRA: <@" + std::to_string(event.command.get_issuing_user().id) + ">");
         event.reply(dpp::message(event.command.channel_id, embes));
         
     }
