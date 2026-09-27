@@ -61,7 +61,7 @@ dpp::user* usere = dpp::find_user(id);
 std::string fmsg;
 
 if(!usere){
-event.reply("No encontre ese usuario", std::to_string(id));
+event.reply("No encontre ese usuario" + std::to_string(id));
 return;
 }
 
