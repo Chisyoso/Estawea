@@ -33,11 +33,11 @@ int main() {
         bool stade = true;
 
         if (xpn[id] == 0 && level[id] == 0)
-            xpn[id] = 10;
+            xpn[id] = 50;
 
         if (xp[id] >= xpn[id]) {
             xp[id] -= xpn[id];
-            xpn[id] += 20;
+            xpn[id] += 50;
             level[id]++;
         }
 // comando 1 ###
@@ -59,11 +59,11 @@ int main() {
                 usere = usuario;
 
                 if (xpn[id] == 0 && level[id] == 0)
-                    xpn[id] = 10;
+                    xpn[id] = 50;
 
                 if (xp[id] >= xpn[id]) {
                     xp[id] -= xpn[id];
-                    xpn[id] += 20;
+                    xpn[id] += 50;
                     level[id]++;
                 }
             }
