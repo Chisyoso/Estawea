@@ -273,7 +273,7 @@ int main(){
     event.command.token,
     dpp::message("PVP descontinuado, unete a uno mas actual")
 );
-                        );
+                        
                         return;
                     }
                     if(canmx[idm] + 5 <= canmn2[idm]){
