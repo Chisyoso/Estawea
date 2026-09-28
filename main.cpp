@@ -195,15 +195,13 @@ int main(){
                             break;
                         }
                     }
-                    if(!estado){
-                        bot.interaction_followup_create(
-
-    event.command.token,
-
-    dpp::message("PVP descontinuado, unete a uno mas actual")
-
-);
-                        return;
+                    if(canmx.find(idm) == canmx.end()){
+    bot.interaction_followup_create(
+        event.command.token,
+        dpp::message("PVP descontinuado, unete a uno mas actual")
+    );
+    return;
+}
                     }
                     if(canmx[idm] <= canmn[idm]){
                         bot.interaction_followup_create(
@@ -268,14 +266,13 @@ int main(){
                             break;
                         }
                     }
-                    if(!estado){
-                        bot.interaction_followup_create(
-    event.command.token,
-    dpp::message("PVP descontinuado, unete a uno mas actual")
-);
-                        
-                        return;
-                    }
+                    if(canmx.find(idm) == canmx.end()){
+    bot.interaction_followup_create(
+        event.command.token,
+        dpp::message("PVP descontinuado, unete a uno mas actual")
+    );
+    return;
+}
                     if(canmx[idm] + 5 <= canmn2[idm]){
                         bot.interaction_followup_create(
     event.command.token,
