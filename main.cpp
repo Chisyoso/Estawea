@@ -297,7 +297,7 @@ std::string eq1, eq2;
 
                 if(!equipo2){
 
-                    if(canmn[pvp_id] >= cantius){
+                    if(canmn[pvp_id] > cantius){
 
                         bot.interaction_followup_create(
                             event.command.token,
@@ -314,7 +314,7 @@ std::string eq1, eq2;
                 }
                 else{
 
-                    if(canmn2[pvp_id] >= cantius + 5){
+                    if(canmn2[pvp_id] > cantius + 5){
 
                         bot.interaction_followup_create(
                             event.command.token,
