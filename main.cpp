@@ -177,7 +177,7 @@ dpp::component().add_component(buton)
     });
 
 	// botones ##
-    bot.on_button_click([&bot, ](const dpp::button_click_t& event) {
+    bot.on_button_click([&bo](const dpp::button_click_t& event) {
     // ids
 dpp::snowflake ids = event.command.guild_id;
         dpp::snowflake id = event.command.get_issuing_user().id;
