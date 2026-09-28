@@ -3,8 +3,44 @@
 #include <map>
 #include <cctype>
 #include <string>
+#include <vector>
 
+// usuario
 std::map<dpp::snowflake, int> xp, level, xpn, bt, btw;
+// server
+std::map<dpp::snowflake, std::string[12][5]> user;
+
+std::map<dpp::snowflake, int> roll, rollo; // roll y rollo para cambio de posicion en el arreglo
+
+std::map<dpp::snowflake, dpp::snowflake, int> canmx, canmn, canmn2; // cantidad maxima y minima
+// variable de comando
+std::map<dpp::snowflake, int> 
+
+void inicia(int a, dpp::snowflake id){
+	if(a == 10){
+    for(int i = 0; i < 5; i++){
+		for(int j = 1; j > 11; j++){
+            user[id][j][i] = "?";
+        }
+    }
+    else{
+        a;
+        for(int i = 1; i < 11; i++){
+            user[id][i][a] = "?";
+        }
+    }
+    }
+}
+
+void iniuser(dpp:snowflake id){
+    if (xpn[id] == 0 && level[id] == 0)
+            xpn[id] = 50;
+        if (xp[id] >= xpn[id]) {
+            xp[id] -= xpn[id];
+            xpn[id] += 50;
+            level[id]++;
+        }
+}
 
 int main() {
     const char* token = std::getenv("DISCORD_TOKEN");
@@ -15,6 +51,10 @@ int main() {
 
     bot.on_ready([&bot](const dpp::ready_t& event) {
         if (dpp::run_once<struct register_commands>()) {
+            //
+            dpp::slashcommand pvp("pvp", "Comienza una batalla", bot.me.id);
+            pvp.add_option( dpp::command_option(dpp::co_integer, "cantidad", "Cantidad de usuarios por equipo", true).set_min_value(1).set_max_value(5));
+            
             //
             dpp::slashcommand stats("stats", "Observa tus stats", bot.me.id);
             stats.add_option(
@@ -34,33 +74,64 @@ int main() {
     });
 
     bot.on_slashcommand([&bot](const dpp::slashcommand_t& event) {
+
         dpp::snowflake id = event.command.get_issuing_user().id;
         dpp::user usere = event.command.get_issuing_user();
+				dpp::snowflake ids = event.command.guild_id;
         bool stade = true;
+		
+        iniuser(id);
 
-        if (xpn[id] == 0 && level[id] == 0)
-            xpn[id] = 50;
-
-        if (xp[id] >= xpn[id]) {
-            xp[id] -= xpn[id];
-            xpn[id] += 50;
-            level[id]++;
+        if(user[ids][1][0] != "?"){
+			inicia(10, ids);
         }
+    	
+        
 // comando 1 ### hola
         if (event.command.get_command_name() == "hola") {
             event.reply("adios 🥺");
         }
 // comando 2### pvp
 		if(event.command.get_command_name() == "pvp"){
-            dpp::component buton = dpp::component().set_type(dpp::cot_button).set_label("ACEPTAR").set_id("pedir").set_style(dpp::cos_primary);
+				int cantius = std::get<int>(event.get_parameter("cantidad"));
+            dpp::component buton = dpp::component().set_type(dpp::cot_button).set_label("EQUIPO 1").set_id("join1").set_style(dpp::cos_primary);
+            dpp::component boton = dpp::component().set_type(dpp::cot_button).set_label("EQUIPO 2").set_id("join2").set_style(dpp::cos_secundary);
 
 			dpp::embed embes;
-            embes.set_title("BUSCANDO CONTRINCANTE");
-            embes.set_description("EL USUARIO <@" + std::to_string(id) + "> \n esta buscando pvp");
+
+		inicia(roll, ids);
+
+		rollo[ids].push_back(event.command.message_id);
+        if(rollo[ids].size() > 5){
+			rollo[ids].erase(0);
+        }
+		roll[event.command.message_id] = roll[ids];
+		canmx[event.command.message_id] = cantius;
+        canmn[event.command.message_id] = 0;
+        canmn2[event.command.message_id] = 5;
+        if(roll[ids] > 4){
+            roll[ids] = 0;
+        } else{
+        roll[ids]++;}
+
+            std::string eq1, eq2;
+            embes.set_title("BUSCANDO EQUIPO");
+            for(int i = 1; i < cantius; i++){
+				eq1 += "<@" + std::to_string(user[ids][i][roll]) + "> ";
+            }
+			for(int i = 6; i < cantius + 5;i++){
+                eq2 += "<@" + std::to_string(user[ids][i][roll]) + "> ";
+            }
+
+            embes.set_description("ES ESTA HARMANO UN PVP DE: " + std::to_string(cantius) + "USUARIOS POR EQUIPO" +);
+			embes.add_field("TEAM 1: ", eq1);
+            embes.add_field("TEAM 1: ", eq2);
             dpp::message msg(event.command.channel_id, embes);
             
             msg.add_component(
 dpp::component().add_component(buton)
+);			msg.add_component(
+    dpp::component().add_component(boton)
 );
             event.reply(msg);
         }
@@ -80,14 +151,7 @@ dpp::component().add_component(buton)
                 
                 usere = usuario;
 
-                if (xpn[id] == 0 && level[id] == 0)
-                    xpn[id] = 50;
-
-                if (xp[id] >= xpn[id]) {
-                    xp[id] -= xpn[id];
-                    xpn[id] += 50;
-                    level[id]++;
-                }
+                iniuser(id);
             }
 
             dpp::embed embes;
@@ -119,23 +183,111 @@ dpp::component().add_component(buton)
 
 	// botones ##
     bot.on_button_click([&bot](const dpp::button_click_t& event) {
-    
-if (event.custom_id == "pedir") {
-    event.reply(dpp::ir_deferred_update_message, dpp::message());
+    // ids
+dpp::snowflake ids = event.command.guild_id;
+        dpp::snowflake id = event.command.get_issuing_user().id;
+        dpp::snowflake idm = event.command.message_id;
 
+// botones XDD
+
+if (event.custom_id == "join1") {
+    event.reply(dpp::ir_deferred_update_message, dpp::message());
+	bool estado = false;
     bot.message_get(event.command.message_id, event.command.channel_id,
     [&bot, event](const dpp::confirmation_callback_t& callback) {
         dpp::message msg = std::get<dpp::message>(callback.value);
+		dpp::embed embes;
 
-        dpp::embed embed;
-        embed.set_title("CONTRINCANTE ENCONTRADO :D");
-        embed.set_description("AHORA TE TOCARA LUCHAR CONTRA: <@" + std::to_string(event.command.get_issuing_user().id) + ">");
-        msg.embeds.clear();
-        msg.add_embed(embed);
-        msg.components.clear();
-        bot.message_edit(msg);
+		for(int i = 0; i < 5; i++){
+            if(rollo[ids][i] == idm){
+                estado = true;
+            }
+        }
+
+        if(estado){
+            if(canmx[idm] < canmn[idm]){
+            int cantius = canmx[ids][idm];
+            user[ids][canmn[idm]][roll[idm]] = std::to_string(id);
+			canmn[ids][idm]++;
+
+        std::string eq1, eq2;
+            embes.set_title("BUSCANDO EQUIPO");
+            for(int i = 1; i < cantius; i++){
+				eq1 += "<@" + std::to_string(user[ids][i][roll]) + "> ";
+            }
+			for(int i = 6; i < cantius + 5;i++){
+                eq2 += "<@" + std::to_string(user[ids][i][roll]) + "> ";
+            }
+
+            embes.set_description("ES ESTA HARMANO UN PVP DE: " + std::to_string(cantius) + "USUARIOS POR EQUIPO" +);
+			embes.add_field("TEAM 1: ", eq1);
+            embes.add_field("TEAM 2: ", eq2);
+            dpp::message msg(event.command.channel_id, embes);
+            
+            event.reply(msg);
+            } else {
+                event.reply("ta lleno")
+            }
+            
+            }
+
+            else{
+                event.reply("PVP descontinuado, unete a uno mas actual");
+                return;
+            }
+        
     });
 }
+if (event.custom_id == "join2") {
+    event.reply(dpp::ir_deferred_update_message, dpp::message());
+	bool estado = false;
+    bot.message_get(event.command.message_id, event.command.channel_id,
+    [&bot, event](const dpp::confirmation_callback_t& callback) {
+        dpp::message msg = std::get<dpp::message>(callback.value);
+		dpp::embed embes;
+
+		for(int i = 0; i < 5; i++){
+            if(rollo[ids][i] == idm){
+                estado = true;
+            }
+        }
+
+        if(estado){
+            if(canmx[idm] + 5 < canmn2[idm]){
+            int cantius = canmx[ids][idm];
+            user[ids][canmn2[idm]][roll[idm]] = std::to_string(id);
+			canmn2[ids][idm]++;
+
+        std::string eq1, eq2;
+            embes.set_title("BUSCANDO EQUIPO");
+            for(int i = 1; i < cantius; i++){
+				eq1 += "<@" + std::to_string(user[ids][i][roll]) + "> ";
+            }
+			for(int i = 6; i < cantius + 5;i++){
+                eq2 += "<@" + std::to_string(user[ids][i][roll]) + "> ";
+            }
+
+            embes.set_description("ES ESTA HARMANO UN PVP DE: " + std::to_string(cantius) + "USUARIOS POR EQUIPO" +);
+			embes.add_field("TEAM 1: ", eq1);
+            embes.add_field("TEAM 2: ", eq2);
+            dpp::message msg(event.command.channel_id, embes);
+            
+            event.reply(msg);
+            } else {
+                event.reply("ta lleno")
+            }
+            
+            }
+
+            else{
+                event.reply("PVP descontinuado, unete a uno mas actual");
+                return;
+            }
+        
+    });
+}
+
+
 
 });
 
