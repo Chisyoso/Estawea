@@ -124,7 +124,7 @@ int main(){
             canmn[pvp_id] = 0;
             canmn2[pvp_id] = 6;
             roll[pvp_id] = columna;
-
+std::string eq1, eq2;
             for(int i = 1; i <= cantius; i++){
                     
                         eq1 += "<@" +
