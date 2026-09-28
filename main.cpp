@@ -13,15 +13,13 @@ std::map<dpp::snowflake, int> canmx, canmn, canmn2, roll;
 void inicia(int a, dpp::snowflake id){
     if(a == 10){
         for(int i = 0; i < 5; i++){
-            for(int j = 1; j < 11; j++){
+            for(int j = 1; j < 11; j++)
                 user[id][j][i] = "?";
-            }
         }
     }
     else{
-        for(int i = 1; i < 11; i++){
+        for(int i = 1; i < 11; i++)
             user[id][i][a] = "?";
-        }
     }
 }
 
@@ -117,44 +115,22 @@ int main(){
                 )
             );
 
-            dpp::component buton =
-                dpp::component()
-                .set_type(dpp::cot_button)
-                .set_label("EQUIPO 1")
-                .set_id("join1")
-                .set_style(dpp::cos_primary);
-
-            dpp::component boton =
-                dpp::component()
-                .set_type(dpp::cot_button)
-                .set_label("EQUIPO 2")
-                .set_id("join2")
-                .set_style(dpp::cos_secondary);
-
+            dpp::snowflake pvp_id = event.command.id;
             int columna = roll[ids];
 
             inicia(columna, ids);
 
-            std::string eq1, eq2;
+            canmx[pvp_id] = cantius;
+            canmn[pvp_id] = 0;
+            canmn2[pvp_id] = 6;
+            roll[pvp_id] = columna;
+
+            std::string eq1 = "Vacío";
+            std::string eq2 = "Vacío";
+
             dpp::embed embes;
 
             embes.set_title("BUSCANDO EQUIPO");
-
-            for(int i = 1; i <= cantius; i++){
-                if(user[ids][i][columna] != "?")
-                    eq1 += "<@" + user[ids][i][columna] + "> ";
-            }
-
-            for(int i = 6; i <= cantius + 5; i++){
-                if(user[ids][i][columna] != "?")
-                    eq2 += "<@" + user[ids][i][columna] + "> ";
-            }
-
-            if(eq1.empty())
-                eq1 = "Vacío";
-
-            if(eq2.empty())
-                eq2 = "Vacío";
 
             embes.set_description(
                 "ES ESTA HARMANO UN PVP DE: " +
@@ -164,6 +140,20 @@ int main(){
 
             embes.add_field("TEAM 1: ", eq1);
             embes.add_field("TEAM 2: ", eq2);
+
+            dpp::component buton =
+                dpp::component()
+                .set_type(dpp::cot_button)
+                .set_label("EQUIPO 1")
+                .set_id("join1_" + std::to_string(pvp_id))
+                .set_style(dpp::cos_primary);
+
+            dpp::component boton =
+                dpp::component()
+                .set_type(dpp::cot_button)
+                .set_label("EQUIPO 2")
+                .set_id("join2_" + std::to_string(pvp_id))
+                .set_style(dpp::cos_secondary);
 
             dpp::message msg(
                 event.command.channel_id,
@@ -178,28 +168,7 @@ int main(){
                 dpp::component().add_component(boton)
             );
 
-            event.reply(
-                msg,
-                [&bot, ids, cantius, columna]
-                (const dpp::confirmation_callback_t& callback){
-
-                    dpp::message respuesta =
-                        std::get<dpp::message>(callback.value);
-
-                    dpp::snowflake idm =
-                        respuesta.id;
-
-                    rollo[ids].push_back(idm);
-
-                    if(rollo[ids].size() > 5)
-                        rollo[ids].erase(rollo[ids].begin());
-
-                    roll[idm] = columna;
-                    canmx[idm] = cantius;
-                    canmn[idm] = 0;
-                    canmn2[idm] = 6;
-                }
-            );
+            event.reply(msg);
 
             if(roll[ids] > 4)
                 roll[ids] = 0;
@@ -231,15 +200,13 @@ int main(){
 
             embes.set_title("TU CARTA:");
 
-            if(stade){
+            if(stade)
                 fmsg = "# TUS STATS\n";
-            }
-            else{
+            else
                 fmsg =
                     "# STATS DE <@" +
                     std::to_string(id) +
                     ">\n";
-            }
 
             fmsg += "Xp: ";
             fmsg += std::to_string(xp[id]);
@@ -279,39 +246,46 @@ int main(){
         dpp::snowflake id =
             event.command.get_issuing_user().id;
 
-        dpp::snowflake idm =
-            event.command.message_id;
+        std::string custom = event.custom_id;
 
-        if(event.custom_id == "join1"){
+        bool equipo2 =
+            custom.rfind("join2_", 0) == 0;
 
+        dpp::snowflake pvp_id;
+
+        if(equipo2)
+            pvp_id = std::stoull(custom.substr(6));
+        else
+            pvp_id = std::stoull(custom.substr(6));
+
+        if(canmx.find(pvp_id) == canmx.end()){
             event.reply(
-                dpp::ir_deferred_update_message,
-                dpp::message()
+                "PVP descontinuado, unete a uno mas actual"
             );
+            return;
+        }
 
-            bot.message_get(
-                event.command.message_id,
-                event.command.channel_id,
+        int cantius = canmx[pvp_id];
+        int columna = roll[pvp_id];
 
-                [&bot, event, ids, id, idm]
-                (const dpp::confirmation_callback_t& callback){
+        event.reply(
+            dpp::ir_deferred_update_message,
+            dpp::message()
+        );
 
-                    dpp::message msg =
-                        std::get<dpp::message>(callback.value);
+        bot.message_get(
+            event.command.message_id,
+            event.command.channel_id,
 
-                    if(canmx.find(idm) == canmx.end()){
+            [&bot, event, ids, id, pvp_id, columna, cantius, equipo2]
+            (const dpp::confirmation_callback_t& callback){
 
-                        bot.interaction_followup_create(
-                            event.command.token,
-                            dpp::message(
-                                "PVP descontinuado, unete a uno mas actual"
-                            )
-                        );
+                dpp::message msg =
+                    std::get<dpp::message>(callback.value);
 
-                        return;
-                    }
+                if(!equipo2){
 
-                    if(canmx[idm] <= canmn[idm]){
+                    if(canmn[pvp_id] >= cantius){
 
                         bot.interaction_followup_create(
                             event.command.token,
@@ -321,86 +295,14 @@ int main(){
                         return;
                     }
 
-                    int cantius = canmx[idm];
-                    int columna = roll[idm];
-
-                    user[ids][canmn[idm]][columna] =
+                    user[ids][canmn[pvp_id]][columna] =
                         std::to_string(id);
 
-                    canmn[idm]++;
-
-                    std::string eq1, eq2;
-                    dpp::embed embes;
-
-                    embes.set_title("BUSCANDO EQUIPO");
-
-                    for(int i = 1; i <= cantius; i++){
-                        if(user[ids][i][columna] != "?")
-                            eq1 += "<@" +
-                                user[ids][i][columna] +
-                                "> ";
-                    }
-
-                    for(int i = 6; i <= cantius + 5; i++){
-                        if(user[ids][i][columna] != "?")
-                            eq2 += "<@" +
-                                user[ids][i][columna] +
-                                "> ";
-                    }
-
-                    if(eq1.empty())
-                        eq1 = "Vacío";
-
-                    if(eq2.empty())
-                        eq2 = "Vacío";
-
-                    embes.set_description(
-                        "ES ESTA HARMANO UN PVP DE: " +
-                        std::to_string(cantius) +
-                        " USUARIOS POR EQUIPO"
-                    );
-
-                    embes.add_field("TEAM 1: ", eq1);
-                    embes.add_field("TEAM 2: ", eq2);
-
-                    msg.embeds.clear();
-                    msg.add_embed(embes);
-
-                    bot.message_edit(msg);
+                    canmn[pvp_id]++;
                 }
-            );
-        }
+                else{
 
-        if(event.custom_id == "join2"){
-
-            event.reply(
-                dpp::ir_deferred_update_message,
-                dpp::message()
-            );
-
-            bot.message_get(
-                event.command.message_id,
-                event.command.channel_id,
-
-                [&bot, event, ids, id, idm]
-                (const dpp::confirmation_callback_t& callback){
-
-                    dpp::message msg =
-                        std::get<dpp::message>(callback.value);
-
-                    if(canmx.find(idm) == canmx.end()){
-
-                        bot.interaction_followup_create(
-                            event.command.token,
-                            dpp::message(
-                                "PVP descontinuado, unete a uno mas actual"
-                            )
-                        );
-
-                        return;
-                    }
-
-                    if(canmx[idm] + 5 <= canmn2[idm]){
+                    if(canmn2[pvp_id] >= cantius + 5){
 
                         bot.interaction_followup_create(
                             event.command.token,
@@ -410,55 +312,53 @@ int main(){
                         return;
                     }
 
-                    int cantius = canmx[idm];
-                    int columna = roll[idm];
-
-                    user[ids][canmn2[idm]][columna] =
+                    user[ids][canmn2[pvp_id]][columna] =
                         std::to_string(id);
 
-                    canmn2[idm]++;
-
-                    std::string eq1, eq2;
-                    dpp::embed embes;
-
-                    embes.set_title("BUSCANDO EQUIPO");
-
-                    for(int i = 1; i <= cantius; i++){
-                        if(user[ids][i][columna] != "?")
-                            eq1 += "<@" +
-                                user[ids][i][columna] +
-                                "> ";
-                    }
-
-                    for(int i = 6; i <= cantius + 5; i++){
-                        if(user[ids][i][columna] != "?")
-                            eq2 += "<@" +
-                                user[ids][i][columna] +
-                                "> ";
-                    }
-
-                    if(eq1.empty())
-                        eq1 = "Vacío";
-
-                    if(eq2.empty())
-                        eq2 = "Vacío";
-
-                    embes.set_description(
-                        "ES ESTA HARMANO UN PVP DE: " +
-                        std::to_string(cantius) +
-                        " USUARIOS POR EQUIPO"
-                    );
-
-                    embes.add_field("TEAM 1: ", eq1);
-                    embes.add_field("TEAM 2: ", eq2);
-
-                    msg.embeds.clear();
-                    msg.add_embed(embes);
-
-                    bot.message_edit(msg);
+                    canmn2[pvp_id]++;
                 }
-            );
-        }
+
+                std::string eq1, eq2;
+
+                for(int i = 1; i <= cantius; i++){
+                    if(user[ids][i][columna] != "?")
+                        eq1 += "<@" +
+                            user[ids][i][columna] +
+                            "> ";
+                }
+
+                for(int i = 6; i <= cantius + 5; i++){
+                    if(user[ids][i][columna] != "?")
+                        eq2 += "<@" +
+                            user[ids][i][columna] +
+                            "> ";
+                }
+
+                if(eq1.empty())
+                    eq1 = "Vacío";
+
+                if(eq2.empty())
+                    eq2 = "Vacío";
+
+                dpp::embed embes;
+
+                embes.set_title("BUSCANDO EQUIPO");
+
+                embes.set_description(
+                    "ES ESTA HARMANO UN PVP DE: " +
+                    std::to_string(cantius) +
+                    " USUARIOS POR EQUIPO"
+                );
+
+                embes.add_field("TEAM 1: ", eq1);
+                embes.add_field("TEAM 2: ", eq2);
+
+                msg.embeds.clear();
+                msg.add_embed(embes);
+
+                bot.message_edit(msg);
+            }
+        );
     });
 
     bot.start(dpp::st_wait);
