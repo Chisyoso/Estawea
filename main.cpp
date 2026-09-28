@@ -202,7 +202,7 @@ int main(){
     );
     return;
 }
-                    }
+                    
                     if(canmx[idm] <= canmn[idm]){
                         bot.interaction_followup_create(
     event.command.token,
