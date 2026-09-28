@@ -59,9 +59,7 @@ int main() {
             );
             bot.global_command_create(stats);
             //
-			bot.global_command_create(
-				dpp::slashcommand("pvp", "busca pvp y alguien te respondera", bot.me.id)
-            );
+			bot.global_command_create(pvp);
 			//
             bot.global_command_create(
                 dpp::slashcommand("hola", "Responde con un saludo!", bot.me.id)
@@ -105,7 +103,7 @@ int main() {
 		roll[event.command.message_id] = roll[ids];
 		canmx[event.command.message_id] = cantius;
         canmn[event.command.message_id] = 0;
-        canmn2[event.command.message_id] = 5;
+        canmn2[event.command.message_id] = 6;
         if(roll[ids] > 4){
             roll[ids] = 0;
         } else{
@@ -202,10 +200,10 @@ if (event.custom_id == "join1") {
         }
 
         if(estado){
-            if(canmx[idm] < canmn[idm]){
-            int cantius = canmx[ids][idm];
+            if(canmx[idm] > canmn[idm]){
+            int cantius = canmx[idm];
             user[ids][canmn[idm]][roll[idm]] = std::to_string(id);
-			canmn[ids][idm]++;
+			canmn[idm]++;
 
         std::string eq1, eq2;
             embes.set_title("BUSCANDO EQUIPO");
@@ -250,10 +248,10 @@ if (event.custom_id == "join2") {
         }
 
         if(estado){
-            if(canmx[idm] + 5 < canmn2[idm]){
-            int cantius = canmx[ids][idm];
+            if(canmx[idm] + 5 > canmn2[idm]){
+            int cantius = canmx[idm];
             user[ids][canmn2[idm]][roll[idm]] = std::to_string(id);
-			canmn2[ids][idm]++;
+			canmn2[idm]++;
 
         std::string eq1, eq2;
             embes.set_title("BUSCANDO EQUIPO");
