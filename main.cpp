@@ -69,7 +69,7 @@ int main(){
         dpp::snowflake ids = event.command.guild_id;
         bool stade = true;
         iniuser(id);
-        if(user[ids][1][0] != "?")
+        if(user[ids][2][1] != "?")
             inicia(10, ids);
         if(event.command.get_command_name() == "hola"){
             event.reply("adios 🥺");
