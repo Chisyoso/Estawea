@@ -96,6 +96,8 @@ int main() {
 
 		inicia(roll[ids], ids);
 
+dpp::message msg(event.command.channel_id, embes);
+
 		event.reply(msg, [&bot, ids, cantius](const dpp::confirmation_callback_t& callback) {
     auto respuesta = std::get<dpp::message>(callback.value);
     dpp::snowflake idm = respuesta.id;
@@ -127,7 +129,7 @@ int main() {
             embes.set_description("ES ESTA HARMANO UN PVP DE: " + std::to_string(cantius) + "USUARIOS POR EQUIPO");
 			embes.add_field("TEAM 1: ", eq1);
             embes.add_field("TEAM 1: ", eq2);
-            dpp::message msg(event.command.channel_id, embes);
+            
             
             msg.add_component(
 dpp::component().add_component(buton)
