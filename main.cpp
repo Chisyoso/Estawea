@@ -10,9 +10,9 @@ std::map<dpp::snowflake, int> xp, level, xpn, bt, btw;
 // server
 std::map<dpp::snowflake, std::string[12][5]> user;
 
-std::map<dpp::snowflake, std::vector<dpp::snowflake>> roll, rollo; // roll y rollo para cambio de posicion en el arreglo
+std::map<dpp::snowflake, std::vector<dpp::snowflake>> rollo; // roll y rollo para cambio de posicion en el arreglo
 
-std::map<dpp::snowflake, int> canmx, canmn, canmn2; // cantidad maxima y minima
+std::map<dpp::snowflake, int> canmx, canmn, canmn2, roll; // cantidad maxima y minima
 // variable de comando
 
 void inicia(int a, dpp::snowflake id){
@@ -177,7 +177,7 @@ dpp::component().add_component(buton)
     });
 
 	// botones ##
-    bot.on_button_click([&bo](const dpp::button_click_t& event) {
+    bot.on_button_click([&bot](const dpp::button_click_t& event) {
     // ids
 dpp::snowflake ids = event.command.guild_id;
         dpp::snowflake id = event.command.get_issuing_user().id;
@@ -187,12 +187,12 @@ dpp::snowflake ids = event.command.guild_id;
 
 if (event.custom_id == "join1") {
     event.reply(dpp::ir_deferred_update_message, dpp::message());
-	bool estado = false;
+	
     bot.message_get(event.command.message_id, event.command.channel_id,
-    [&bot, event, ids, id, idm, &estado](const dpp::confirmation_callback_t& callback) {
+    [&bot, event, ids, id, idm](const dpp::confirmation_callback_t& callback) {
         dpp::message msg = std::get<dpp::message>(callback.value);
 		dpp::embed embes;
-
+bool estado = false;
 		for(int i = 0; i < 5; i++){
             if(rollo[ids][i] == idm){
                 estado = true;
@@ -235,12 +235,12 @@ if (event.custom_id == "join1") {
 }
 if (event.custom_id == "join2") {
     event.reply(dpp::ir_deferred_update_message, dpp::message());
-	bool estado = false;
+
     bot.message_get(event.command.message_id, event.command.channel_id,
     [&bot, event, ids, id, idm, &estado](const dpp::confirmation_callback_t& callback) {
         dpp::message msg = std::get<dpp::message>(callback.value);
 		dpp::embed embes;
-
+bool estado = false;
 		for(int i = 0; i < 5; i++){
             if(rollo[ids][i] == idm){
                 estado = true;
