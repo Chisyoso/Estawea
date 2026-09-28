@@ -10,24 +10,22 @@ std::map<dpp::snowflake, int> xp, level, xpn, bt, btw;
 // server
 std::map<dpp::snowflake, std::string[12][5]> user;
 
-std::map<dpp::snowflake, int> roll, rollo; // roll y rollo para cambio de posicion en el arreglo
+std::map<dpp::snowflake, std::vector<dpp::snowflake>> roll, rollo; // roll y rollo para cambio de posicion en el arreglo
 
-std::map<dpp::snowflake, dpp::snowflake, int> canmx, canmn, canmn2; // cantidad maxima y minima
+std::map<dpp::snowflake, int> canmx, canmn, canmn2; // cantidad maxima y minima
 // variable de comando
 
 void inicia(int a, dpp::snowflake id){
 	if(a == 10){
     for(int i = 0; i < 5; i++){
-		for(int j = 1; j > 11; j++){
+		for(int j = 1; j < 11; j++){
             user[id][j][i] = "?";
         }
-    }
+    }}
     else{
-        a;
         for(int i = 1; i < 11; i++){
             user[id][i][a] = "?";
         }
-    }
     }
 }
 
@@ -98,7 +96,7 @@ int main() {
 
 			dpp::embed embes;
 
-		inicia(roll, ids);
+		inicia(roll[ids], ids);
 
 		rollo[ids].push_back(event.command.message_id);
         if(rollo[ids].size() > 5){
@@ -116,10 +114,10 @@ int main() {
             std::string eq1, eq2;
             embes.set_title("BUSCANDO EQUIPO");
             for(int i = 1; i < cantius; i++){
-				eq1 += "<@" + std::to_string(user[ids][i][roll]) + "> ";
+				eq1 += "<@" + std::to_string(user[ids][i][roll[ids]]) + "> ";
             }
 			for(int i = 6; i < cantius + 5;i++){
-                eq2 += "<@" + std::to_string(user[ids][i][roll]) + "> ";
+                eq2 += "<@" + std::to_string(user[ids][i][roll[ids]]) + "> ";
             }
 
             embes.set_description("ES ESTA HARMANO UN PVP DE: " + std::to_string(cantius) + "USUARIOS POR EQUIPO");
@@ -181,7 +179,7 @@ dpp::component().add_component(buton)
     });
 
 	// botones ##
-    bot.on_button_click([&bot](const dpp::button_click_t& event) {
+    bot.on_button_click([&bot, ](const dpp::button_click_t& event) {
     // ids
 dpp::snowflake ids = event.command.guild_id;
         dpp::snowflake id = event.command.get_issuing_user().id;
@@ -193,7 +191,7 @@ if (event.custom_id == "join1") {
     event.reply(dpp::ir_deferred_update_message, dpp::message());
 	bool estado = false;
     bot.message_get(event.command.message_id, event.command.channel_id,
-    [&bot, event](const dpp::confirmation_callback_t& callback) {
+    [&bot, event, ids, id, idm, &estado](const dpp::confirmation_callback_t& callback) {
         dpp::message msg = std::get<dpp::message>(callback.value);
 		dpp::embed embes;
 
@@ -241,7 +239,7 @@ if (event.custom_id == "join2") {
     event.reply(dpp::ir_deferred_update_message, dpp::message());
 	bool estado = false;
     bot.message_get(event.command.message_id, event.command.channel_id,
-    [&bot, event](const dpp::confirmation_callback_t& callback) {
+    [&bot, event, ids, id, idm, &estado](const dpp::confirmation_callback_t& callback) {
         dpp::message msg = std::get<dpp::message>(callback.value);
 		dpp::embed embes;
 
