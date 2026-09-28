@@ -98,7 +98,7 @@ int main() {
 
 		rollo[ids].push_back(event.command.message_id);
         if(rollo[ids].size() > 5){
-			rollo[ids].erase(0);
+			rollo[ids].erase(rollo[ids].begin());
         }
 		roll[event.command.message_id] = roll[ids];
 		canmx[event.command.message_id] = cantius;
@@ -111,10 +111,10 @@ int main() {
 
             std::string eq1, eq2;
             embes.set_title("BUSCANDO EQUIPO");
-            for(int i = 1; i < cantius; i++){
+            for(int i = 1; i <= cantius; i++){
 				eq1 += "<@" + std::to_string(user[ids][i][roll[ids]]) + "> ";
             }
-			for(int i = 6; i < cantius + 5;i++){
+			for(int i = 6; i <= cantius + 5;i++){
                 eq2 += "<@" + std::to_string(user[ids][i][roll[ids]]) + "> ";
             }
 
@@ -193,7 +193,7 @@ if (event.custom_id == "join1") {
         dpp::message msg = std::get<dpp::message>(callback.value);
 		dpp::embed embes;
 bool estado = false;
-		for(int i = 0; i < 5; i++){
+		for(int i = 0; i < rollo[ids].size(); i++){
             if(rollo[ids][i] == idm){
                 estado = true;
             }
@@ -207,10 +207,10 @@ bool estado = false;
 
         std::string eq1, eq2;
             embes.set_title("BUSCANDO EQUIPO");
-            for(int i = 1; i < cantius; i++){
+            for(int i = 1; i <= cantius; i++){
 				eq1 += "<@" + std::to_string(user[ids][i][roll[idm]]) + "> ";
             }
-			for(int i = 6; i < cantius + 5;i++){
+			for(int i = 6; i <= cantius + 5;i++){
                 eq2 += "<@" + std::to_string(user[ids][i][roll[idm]]) + "> ";
             }
 
@@ -241,7 +241,7 @@ if (event.custom_id == "join2") {
         dpp::message msg = std::get<dpp::message>(callback.value);
 		dpp::embed embes;
 bool estado = false;
-		for(int i = 0; i < 5; i++){
+		for(int i = 0; rollo[ids].size(); i++){
             if(rollo[ids][i] == idm){
                 estado = true;
             }
@@ -255,10 +255,10 @@ bool estado = false;
 
         std::string eq1, eq2;
             embes.set_title("BUSCANDO EQUIPO");
-            for(int i = 1; i < cantius; i++){
+            for(int i = 1; i <= cantius; i++){
 				eq1 += "<@" + std::to_string(user[ids][i][roll[idm]]) + "> ";
             }
-			for(int i = 6; i < cantius + 5;i++){
+			for(int i = 6; i <= cantius + 5;i++){
                 eq2 += "<@" + std::to_string(user[ids][i][roll[idm]]) + "> ";
             }
 
