@@ -14,7 +14,6 @@ std::map<dpp::snowflake, int> roll, rollo; // roll y rollo para cambio de posici
 
 std::map<dpp::snowflake, dpp::snowflake, int> canmx, canmn, canmn2; // cantidad maxima y minima
 // variable de comando
-std::map<dpp::snowflake, int> 
 
 void inicia(int a, dpp::snowflake id){
 	if(a == 10){
@@ -32,7 +31,7 @@ void inicia(int a, dpp::snowflake id){
     }
 }
 
-void iniuser(dpp:snowflake id){
+void iniuser(dpp::snowflake id){
     if (xpn[id] == 0 && level[id] == 0)
             xpn[id] = 50;
         if (xp[id] >= xpn[id]) {
@@ -95,7 +94,7 @@ int main() {
 		if(event.command.get_command_name() == "pvp"){
 				int cantius = std::get<int>(event.get_parameter("cantidad"));
             dpp::component buton = dpp::component().set_type(dpp::cot_button).set_label("EQUIPO 1").set_id("join1").set_style(dpp::cos_primary);
-            dpp::component boton = dpp::component().set_type(dpp::cot_button).set_label("EQUIPO 2").set_id("join2").set_style(dpp::cos_secundary);
+            dpp::component boton = dpp::component().set_type(dpp::cot_button).set_label("EQUIPO 2").set_id("join2").set_style(dpp::cos_secondary);
 
 			dpp::embed embes;
 
@@ -123,7 +122,7 @@ int main() {
                 eq2 += "<@" + std::to_string(user[ids][i][roll]) + "> ";
             }
 
-            embes.set_description("ES ESTA HARMANO UN PVP DE: " + std::to_string(cantius) + "USUARIOS POR EQUIPO" +);
+            embes.set_description("ES ESTA HARMANO UN PVP DE: " + std::to_string(cantius) + "USUARIOS POR EQUIPO");
 			embes.add_field("TEAM 1: ", eq1);
             embes.add_field("TEAM 1: ", eq2);
             dpp::message msg(event.command.channel_id, embes);
@@ -213,13 +212,13 @@ if (event.custom_id == "join1") {
         std::string eq1, eq2;
             embes.set_title("BUSCANDO EQUIPO");
             for(int i = 1; i < cantius; i++){
-				eq1 += "<@" + std::to_string(user[ids][i][roll]) + "> ";
+				eq1 += "<@" + std::to_string(user[ids][i][roll[idm]]) + "> ";
             }
 			for(int i = 6; i < cantius + 5;i++){
-                eq2 += "<@" + std::to_string(user[ids][i][roll]) + "> ";
+                eq2 += "<@" + std::to_string(user[ids][i][roll[idm]]) + "> ";
             }
 
-            embes.set_description("ES ESTA HARMANO UN PVP DE: " + std::to_string(cantius) + "USUARIOS POR EQUIPO" +);
+            embes.set_description("ES ESTA HARMANO UN PVP DE: " + std::to_string(cantius) + "USUARIOS POR EQUIPO");
 			embes.add_field("TEAM 1: ", eq1);
             embes.add_field("TEAM 2: ", eq2);
             dpp::message msg(event.command.channel_id, embes);
@@ -261,13 +260,13 @@ if (event.custom_id == "join2") {
         std::string eq1, eq2;
             embes.set_title("BUSCANDO EQUIPO");
             for(int i = 1; i < cantius; i++){
-				eq1 += "<@" + std::to_string(user[ids][i][roll]) + "> ";
+				eq1 += "<@" + std::to_string(user[ids][i][roll[idm]]) + "> ";
             }
 			for(int i = 6; i < cantius + 5;i++){
-                eq2 += "<@" + std::to_string(user[ids][i][roll]) + "> ";
+                eq2 += "<@" + std::to_string(user[ids][i][roll[idm]]) + "> ";
             }
 
-            embes.set_description("ES ESTA HARMANO UN PVP DE: " + std::to_string(cantius) + "USUARIOS POR EQUIPO" +);
+            embes.set_description("ES ESTA HARMANO UN PVP DE: " + std::to_string(cantius) + "USUARIOS POR EQUIPO");
 			embes.add_field("TEAM 1: ", eq1);
             embes.add_field("TEAM 2: ", eq2);
             dpp::message msg(event.command.channel_id, embes);
