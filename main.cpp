@@ -196,17 +196,20 @@ int main(){
                         }
                     }
                     if(!estado){
-                        event.followup_create(
-                            dpp::message("PVP descontinuado, unete a uno mas actual"),
-                            false
-                        );
+                        bot.interaction_followup_create(
+
+    event.command.token,
+
+    dpp::message("PVP descontinuado, unete a uno mas actual")
+
+);
                         return;
                     }
                     if(canmx[idm] <= canmn[idm]){
-                        event.followup_create(
-                            dpp::message("ta lleno"),
-                            false
-                        );
+                        bot.interaction_followup_create(
+    event.command.token,
+    dpp::message("ta lleno")
+);
                         return;
                     }
                     int cantius = canmx[idm];
@@ -266,17 +269,18 @@ int main(){
                         }
                     }
                     if(!estado){
-                        event.followup_create(
-                            dpp::message("PVP descontinuado, unete a uno mas actual"),
-                            false
+                        bot.interaction_followup_create(
+    event.command.token,
+    dpp::message("PVP descontinuado, unete a uno mas actual")
+);
                         );
                         return;
                     }
                     if(canmx[idm] + 5 <= canmn2[idm]){
-                        event.followup_create(
-                            dpp::message("ta lleno"),
-                            false
-                        );
+                        bot.interaction_followup_create(
+    event.command.token,
+    dpp::message("ta lleno")
+);
                         return;
                     }
                     int cantius = canmx[idm];
