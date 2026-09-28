@@ -96,14 +96,20 @@ int main() {
 
 		inicia(roll[ids], ids);
 
-		rollo[ids].push_back(event.command.message_id);
-        if(rollo[ids].size() > 5){
-			rollo[ids].erase(rollo[ids].begin());
-        }
-		roll[event.command.message_id] = roll[ids];
-		canmx[event.command.message_id] = cantius;
-        canmn[event.command.message_id] = 0;
-        canmn2[event.command.message_id] = 6;
+		event.reply(msg, [&bot, ids, cantius](const dpp::confirmation_callback_t& callback) {
+    auto respuesta = std::get<dpp::message>(callback.value);
+    dpp::snowflake idm = respuesta.id;
+
+    rollo[ids].push_back(idm);
+
+    if(rollo[ids].size() > 5)
+        rollo[ids].erase(rollo[ids].begin());
+
+    roll[idm] = roll[ids];
+    canmx[idm] = cantius;
+    canmn[idm] = 0;
+    canmn2[idm] = 6;
+});
         if(roll[ids] > 4){
             roll[ids] = 0;
         } else{
@@ -237,11 +243,11 @@ if (event.custom_id == "join2") {
     event.reply(dpp::ir_deferred_update_message, dpp::message());
 
     bot.message_get(event.command.message_id, event.command.channel_id,
-    [&bot, event, ids, id, idm, &estado](const dpp::confirmation_callback_t& callback) {
+    [&bot, event, ids, id, idm](const dpp::confirmation_callback_t& callback) {
         dpp::message msg = std::get<dpp::message>(callback.value);
 		dpp::embed embes;
 bool estado = false;
-		for(int i = 0; rollo[ids].size(); i++){
+		for(int i = 0; i< rollo[ids].size(); i++){
             if(rollo[ids][i] == idm){
                 estado = true;
             }
