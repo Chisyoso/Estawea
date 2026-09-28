@@ -75,7 +75,7 @@ int main(){
             event.reply("adios 🥺");
         }
         if(event.command.get_command_name() == "pvp"){
-            int cantius = std::get<int>(event.get_parameter("cantidad"));
+            int cantius = static_cast<int>(std::get<int64_t>(event.get_parameter("cantidad")));
             dpp::component buton =
                 dpp::component()
                 .set_type(dpp::cot_button)
