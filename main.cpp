@@ -125,8 +125,20 @@ int main(){
             canmn2[pvp_id] = 6;
             roll[pvp_id] = columna;
 
-            std::string eq1 = "Vacío";
-            std::string eq2 = "Vacío";
+            for(int i = 1; i <= cantius; i++){
+                    
+                        eq1 += "<@" +
+                            user[ids][i][columna] +
+                            "> ";
+                }
+
+                for(int i = 6; i <= cantius + 5; i++){
+                    
+                        eq2 += "<@" +
+                            user[ids][i][columna] +
+                            "> ";
+                }
+
 
             dpp::embed embes;
 
@@ -321,24 +333,20 @@ int main(){
                 std::string eq1, eq2;
 
                 for(int i = 1; i <= cantius; i++){
-                    if(user[ids][i][columna] != "?")
+                    
                         eq1 += "<@" +
                             user[ids][i][columna] +
                             "> ";
                 }
 
                 for(int i = 6; i <= cantius + 5; i++){
-                    if(user[ids][i][columna] != "?")
+                    
                         eq2 += "<@" +
                             user[ids][i][columna] +
                             "> ";
                 }
 
-                if(eq1.empty())
-                    eq1 = "Vacío";
-
-                if(eq2.empty())
-                    eq2 = "Vacío";
+                
 
                 dpp::embed embes;
 
