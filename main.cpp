@@ -93,13 +93,11 @@ int main() {
             dpp::component boton = dpp::component().set_type(dpp::cot_button).set_label("EQUIPO 2").set_id("join2").set_style(dpp::cos_secondary);
 
 			dpp::embed embes;
-
+dpp::message msg(event.command.channel_id, embes);
 		inicia(roll[ids], ids);
 
-dpp::message msg(event.command.channel_id, embes);
-
 		event.reply(msg, [&bot, ids, cantius](const dpp::confirmation_callback_t& callback) {
-    auto respuesta = std::get<dpp::message>(callback.value);
+    dpp::message respuesta = std::get<dpp::message>(callback.value);
     dpp::snowflake idm = respuesta.id;
 
     rollo[ids].push_back(idm);
@@ -129,14 +127,12 @@ dpp::message msg(event.command.channel_id, embes);
             embes.set_description("ES ESTA HARMANO UN PVP DE: " + std::to_string(cantius) + "USUARIOS POR EQUIPO");
 			embes.add_field("TEAM 1: ", eq1);
             embes.add_field("TEAM 1: ", eq2);
-            
-            
-            msg.add_component(
+             msg.add_component(
 dpp::component().add_component(buton)
 );			msg.add_component(
     dpp::component().add_component(boton)
 );
-            event.reply(msg);
+            
         }
 
 // comando 3## stats
@@ -227,7 +223,7 @@ bool estado = false;
             embes.add_field("TEAM 2: ", eq2);
             dpp::message msg(event.command.channel_id, embes);
             
-            event.reply(msg);
+            
             } else {
                 event.reply("ta lleno");
             }
@@ -275,7 +271,7 @@ bool estado = false;
             embes.add_field("TEAM 2: ", eq2);
             dpp::message msg(event.command.channel_id, embes);
             
-            event.reply(msg);
+            
             } else {
                 event.reply("ta lleno");
             }
