@@ -225,7 +225,7 @@ if (event.custom_id == "join1") {
             
             event.reply(msg);
             } else {
-                event.reply("ta lleno")
+                event.reply("ta lleno");
             }
             
             }
@@ -273,7 +273,7 @@ if (event.custom_id == "join2") {
             
             event.reply(msg);
             } else {
-                event.reply("ta lleno")
+                event.reply("ta lleno");
             }
             
             }
